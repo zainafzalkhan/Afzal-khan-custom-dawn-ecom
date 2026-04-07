@@ -1,0 +1,14 @@
+{
+    "sections": {
+        "hero-section": {
+            "type": "custom-gift-card-hero"
+        },
+        "product-grid": {
+            "type": "custom-gift-product-grid"
+        }
+    },
+    "order": [
+        "hero-section",
+        "product-grid"
+    ]
+}
