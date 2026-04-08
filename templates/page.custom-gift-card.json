@@ -1,14 +1,73 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-    "sections": {
-        "hero-section": {
-            "type": "custom-gift-card-hero"
-        },
-        "product-grid": {
-            "type": "custom-gift-product-grid"
-        }
+  "sections": {
+    "hero-section": {
+      "type": "custom-gift-card-hero",
+      "settings": {}
     },
-    "order": [
-        "hero-section",
-        "product-grid"
-    ]
+    "product-grid": {
+      "type": "custom-gift-product-grid",
+      "blocks": {
+        "product_gBWi3V": {
+          "type": "product",
+          "settings": {
+            "grid-product": "led-high-tops"
+          }
+        },
+        "product_wGqaTw": {
+          "type": "product",
+          "settings": {
+            "grid-product": "floral-white-top"
+          }
+        },
+        "product_w3t7JK": {
+          "type": "product",
+          "settings": {
+            "grid-product": "classic-varsity-top"
+          }
+        },
+        "product_zgjUnA": {
+          "type": "product",
+          "settings": {
+            "grid-product": "dark-denim-top"
+          }
+        },
+        "product_XmmgcD": {
+          "type": "product",
+          "settings": {
+            "grid-product": "blue-silk-tuxedo"
+          }
+        },
+        "product_bdDAkh": {
+          "type": "product",
+          "settings": {
+            "grid-product": "black-leather-bag"
+          }
+        }
+      },
+      "block_order": [
+        "product_gBWi3V",
+        "product_wGqaTw",
+        "product_w3t7JK",
+        "product_zgjUnA",
+        "product_XmmgcD",
+        "product_bdDAkh"
+      ],
+      "settings": {
+        "product-grid-heading": "Tisso vison in the wild"
+      }
+    }
+  },
+  "order": [
+    "hero-section",
+    "product-grid"
+  ]
 }
