@@ -1,9 +1,299 @@
-<div>This is Product Grid section</div>
+{% style  %} 
+    .main-product-grid-section{
+        padding:8px 16px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+    }
+    .product-grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+    }
+    .hero-image{
+        position:relative;
+    }
+    .popup-button{
+        position:absolute;
+        top:40%;
+        left:50%;
+        cursor:pointer;
+    }
+
+    .custom-gift-card-modal{
+        position:fixed;
+        inset:0;
+        z-index:200;
+        justify-content:center;
+        align-items:center;
+    }
+    .custom-gift-card-modal .overlay{
+        display:block !important;
+        position: absolute;
+        inset:0;
+        background-color:rgba(25,25,25,0.6);
+
+    }
+    .custom-gift-card-modal .card{
+        z-index: 500;
+        background: #fff;
+        padding: 32px 16px 16px 16px;
+        position:relative;
+    }
+    .custom-gift-card-modal .card [data-close]{
+        position:absolute;
+        top:0;
+        right:0;
+        cursor:pointer;
+    }
+    .custom-gift-card-modal .title{
+        margin:0 !important;
+    }
+    .custom-gift-card-modal .details{
+        display:flex;
+        flex-direction:row;
+        gap:12px;
+    }
+{% endstyle %}
+
+<div class="main-product-grid-section">
+  <div class="heading">
+    <h2>{{ section.settings.product-grid-heading }}</h2>
+  </div>
+  <div class="product-grid">
+    {% for block in section.blocks %}
+        {%  assign  product = all_products[block.settings.grid-product] %}
+        <div class="hero-image">
+            {{ product.featured_image |  image_url: width:"563"  | image_tag  }}
+            <div class="popup-button" data-productId="{{ product.id }}">
+               {% render 'custom-gift-plus-icon' %}
+            </div>
+        </div>
+        <div class="custom-gift-card-modal modal-{{ product.id }}" style="display:none">
+            <script id="productData" type="application/json">
+                {{ product | json }}
+            </script>
+            <div class="overlay" data-close></div>
+                <div class="card">
+                    <div class="close" data-close>
+                        {% render 'custom-gift-close-icon' %}
+                    </div>
+                    <div class="details">
+                        <div class="image-container">
+                           {{ product.featured_image |  image_url: width:"200"  | image_tag  }}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="title">
+                                {{ product.title |   truncate: 30}}
+                            </h3>
+                            <div class="price">
+                                $43
+                            </div>
+                            <div class="description">
+                                {{ product.description | truncate: 30 }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-content">
+                        <div class="product-options">
+                            <div class="custom-options">
+                                {% for option in product.options_with_values %}
+                                    {% assign optionName= option.name %}
+                                    <p>{{option.name}}</p>
+                                    {% if optionName=='color' or optionName=='Color' %}
+                                        {% for value in option.values %}
+                                            <div class="option-btn-wrapper">
+                                                <button
+                                                    class="btn-option"
+                                                    data-value="{{ value }}"
+                                                    data-optionname="{{optionName}}"
+                                                >
+                                                    {{ value }}
+                                                </button>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="select-option-wrapper">
+                                            <div class="select-header">
+                                                <span>Choose Your size</span>
+                                                <div class="up-down-icon">
+                                                    {% render 'custom-gift-up-down-icon' %}
+                                                </div>
+                                            </div>
+                                            <ul>
+                                                {% for value in option.values %}
+                                                    <li
+                                                    class="select-option"
+                                                    data-value="{{value}}"
+                                                    data-optionname="{{optionName}}"
+                                                    >{{ value }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="atc-wrapper">
+                            <input type="hidden" name="selectedVariant" id="selectedVariant">
+                            <button class="atc-button">
+                                Add To Card
+                            </button>
+                        </div>
+                        <div class="errors">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<script>
+    (function (){
+        const popupBtns=document.querySelectorAll(".popup-button");
+        
+        popupBtns.forEach(popupBtn=>{
+            popupBtn.addEventListener('click',(e)=>{
+                document.querySelectorAll(".custom-gift-card-modal").forEach(modal=>modal.style.display='none');
+                
+                const currentBtn=e.currentTarget
+                const productId=currentBtn?.dataset?.productid
+                console.log({currentBtn,productId})
+                const modal=document.querySelector(`.modal-${productId}`);
+                const productData=JSON.parse(
+                    modal.querySelector("#productData")?.textContent
+                )
+                const atcButton=modal.querySelector(".atc-button")
+                const selectedVariantInput=modal.querySelector("#selectedVariant");
+                // close btn event binding
+                const modalCloseBtns=modal.querySelectorAll("[data-close]");
+                modalCloseBtns.forEach(modalClose=>{
+                    modalClose.addEventListener("click",()=>{
+                        modal.style.display='none'
+                    })
+                })
+               
+                modal.style.display="flex"
+
+                // bind event on options
+                let selectedOptions={};
+                productData.options.forEach(optionName=>selectedOptions[optionName]=null)
+              
+                const findVariant=()=>{
+                    // go through every variant
+                    // for every variant we have options, and there's selectedOption for selected option values,
+                    console.log({selectedOptions})
+                    const matchedVariant=productData.variants.find(variant=>{
+                        const isEveryOptionMatched=productData.options.every((optionName,index)=>{
+                            const key=`option${index+1}`;
+                            if(variant[key]==selectedOptions[optionName]){
+                                return true;
+                            }
+                        })
+                        return isEveryOptionMatched;
+                    })
+                    if(matchedVariant){
+                        console.log(matchedVariant);
+                        // bind this variant id to hidden input 
+                        selectedVariantInput.value=matchedVariant.id;
+                    }
+                }
+                // btn event binding
+                const btns=modal.querySelectorAll('.btn-option');
+                btns.forEach(btn=>{
+                    btn.addEventListener("click",()=>{
+                        btns.forEach(btn=>btn.classList.remove("active-btn"))
+                        btn.classList.add('active-btn')
+                        const value=btn.dataset.value;
+                        const optionName=btn.dataset.optionname;
+                        if(value && optionName){
+                            selectedOptions[optionName]=value
+                        }
+                        findVariant()
+                    })
+                });
+
+                // select event binding
+                const selects=modal.querySelectorAll(".select-option")
+                  selects.forEach(select=>{
+                    select.addEventListener("click",()=>{
+                        selects.forEach(select=>select.classList.remove("active-select"))
+                        select.classList.add('active-select')
+                        const value=select.dataset.value;
+                        const optionName=select.dataset.optionname;
+                        console.log({optionName,value})
+                          if(value && optionName){
+                            selectedOptions[optionName]=value
+                        }
+                        findVariant()
+                    })
+                });
+
+                // ATC button event binding
+                const sendItemToCart=async()=>{
+                    const variantId=selectedVariantInput.value;
+                    if(!variantId) return null;
+                    let options={
+                            method:'POST',
+                            headers:{
+                            "Content-Type":"application/json"
+                            },
+                            body:JSON.stringify({
+                            'items':[
+                            {
+                                id:variantId,
+                                quantity:1
+                            }
+                            ]})
+                        }
+                        const resp= await fetch('{{shop.secure_url}}/cart/add',options);
+                        const data=await resp.json();
+                        console.log({data})
+                }
+                atcButton.addEventListener("click",sendItemToCart)
+              
+                
+            })
+        })
+          
+    })()
+  
+</script>
 
 {% schema %}
   {
     "name": "Product Grid Block",
-    "settings": []
+    "settings": [
+      {
+        "type": "text",
+        "default": "Tisso vison in the wild",
+        "id": "product-grid-heading",
+        "label": "Product Grid Heading"
+      }
+     
+    ],
+    "blocks": [
+      {
+        "name": "product-card",
+        "type": "product",
+        "settings": [
+             {
+                "type":"product",
+                "id": "grid-product",
+                "label": "Assign Grid Product",
+            }
+        ],
+        "limit": 6
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Grid Block"
+      }
+    ]
   }
 
 
