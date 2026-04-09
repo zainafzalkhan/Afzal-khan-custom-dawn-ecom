@@ -1,9 +1,361 @@
-<div>This is gift card hero section</div>
+{% style %}
+  .main-hero-container {
+    padding: 16px 32px;
+  }
+  /* DESKTOP HEADER CSS */
+  .hero-header-desktop {
+    background: #f6f6f6;
+  }
+  .hero-header-list {
 
+    display: flex;
+    list-style: none;
+    padding-inline-start: 0;
+    margin-block-start: 0;
+    justify-content: space-between;
+    padding: 8px 50px;
+  }
+  .hero-header-logo {
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  .hero-header-heading {
+    font-size: 14px;
+  }
+  .hero-header-list li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-header-btn {
+    position: relative;
+    border: 1px solid;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .hero-header-btn::before {
+    content: "";
+    background: yellow;
+    transform-origin: left;
+    transform: scaleX(0);
+    position: absolute;
+    inset: 0;
+    transition: transform 0.45s;
+  }
+  .hero-header-btn:hover::before {
+    transform: scaleX(1);
+  }
+  .hero-header-btn span,
+  .hero-header-btn svg {
+    z-index: 2;
+    position: relative;
+  }
+  .main-hero-container-wrapper {
+    min-height: 700px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-image: url('https://cdn.shopify.com/s/files/1/0937/6940/0637/files/hero-bg.png?v=1775719143');
+  }
+  .hero-content-wrapper {
+    background: #fff;
+    z-index: 10;
+    padding: 50px;
+    max-width: 30%;
+    width: fit-content;
+
+  }
+  .hero-content-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: start;
+  }
+  .hero-content-layout h1 {
+    font-size: 64px;
+    font-weight: 400;
+
+  }
+  .hero-content-layout p {
+    line-height: 140%;
+  }
+  .hero-content-layout button {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    padding: 16px 32px;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+
+  }
+
+  .hero-content-layout button::before {
+    content: "";
+    background: yellow;
+    transform-origin: left;
+    transform: scaleX(0);
+    position: absolute;
+    inset: 0;
+    transition: transform 0.45s;
+  }
+  .hero-content-layout button:hover {
+    color: #111;
+  }
+  .hero-content-layout button:hover::before {
+    transform: scaleX(1);
+  }
+  .hero-content-layout button span,
+  .hero-content-layout button svg {
+    z-index: 22;
+    position: relative;
+  }
+  .hero-footer-heading {
+    padding: 4px 50px;
+    text-align: center;
+    background: #f6f6f6;
+  }
+  .hero-footer-heading p {
+    margin: 2px 0 0;
+  }
+  .hero-header-mobile-wrapper {
+    padding: 16px 32px;
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    width: 100%;
+  }
+  .hero-header-mobile {
+    width: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hero-header-mobile-wrapper .mobile-open-close {
+    display: none;
+  }
+  .hero-mobile-manues {
+    position: relative;
+    display: none;
+  }
+  .manus-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+
+  }
+  @media screen and (max-width: 768px) {
+    .hero-header-desktop {
+      display: none;
+    }
+    .hero-header-mobile-wrapper {
+      display: flex;
+    }
+    .main-hero-container-wrapper {
+      justify-content: flex-start;
+      padding: 0;
+      position: relative;
+    }
+    .hero-header-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    .main-hero-container-wrapper .hero-content-wrapper {
+      flex-direction: flex-start;
+      max-width: 100%;
+      padding: 8px 2px;
+    }
+    .hero-content-wrapper h1 {
+      text-align: center;
+    }
+    .hero-content-layout {
+      align-items: center;
+    }
+    .hero-content-layout h1 {
+      font-size: 30px;
+      font-weight: 400;
+    }
+    .hero-content-layout p {
+      font-size: 16px;
+      text-align: center;
+    }
+    .main-hero-container-wrapper .shop-btn {
+      position: absolute;
+      bottom: 5%;
+    }
+    .main-hero-container {
+      padding: 0;
+    }
+    .hero-footer-heading {
+      padding: 4px 32px;
+      font-size: 12px;
+    }
+    .hero-header-mobile-wrapper.manu-open .hero-mobile-manues {
+      z-index: 99;
+      display: flex
+    }
+    .manus-wrapper {
+      width: 100%;
+      background: #fff;
+      position: absolute;
+      text-align: center;
+    }
+  }
+{% endstyle %}
+
+<div class="main-hero-container">
+
+  {% comment %} Header Section  {% endcomment %}
+  <div class="main-hero-container-wrapper" style="background-image: url('https://cdn.shopify.com/s/files/1/0937/6940/0637/files/hero-bg.png?v=1775719143')">
+    <div class="hero-header">
+      <div class="hero-header-desktop">
+        <ul class="hero-header-list">
+          <li class="hero-header-logo">
+            <p>{{ section.settings.header_logo_title }}</p>
+          </li>
+          <li class="hero-header-heading">
+            <p>
+              {{ section.settings.header_heading }}</p>
+          </li>
+          <li class="hero-header-btn">
+            <span>{{ section.settings.header_btn_title }}</span>
+            <div class="arrow-icon">
+              {% render 'gift-btn-arrow' %}
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="hero-header-mobile-wrapper">
+        <div class="hero-header-mobile">
+          <div class="humburger">
+            <div class="mobile-open-icon">
+              {% render 'humburger' %}
+            </div>
+            <div class="mobile-open-close">
+              {% render 'humburger-close' %}
+            </div>
+          </div>
+          <div class="hero-header-logo">
+            <p>{{ section.settings.header_logo_title }}</p>
+          </div>
+          <div class="mobile-balancer" style="display: inline-block;"></div>
+        </div>
+        <div class="hero-mobile-manues">
+          <div class="manus-wrapper">
+            <div class="hero-header-heading">
+              <p>
+                {{ section.settings.header_heading }}</p>
+            </div>
+            <div class="hero-header-btn">
+              <span>{{ section.settings.header_btn_title }}</span>
+              <div class="arrow-icon">
+                {% render 'gift-btn-arrow' %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% comment %} CONTENT BLOCK {% endcomment %}
+    <div class="hero-content-wrapper">
+      <div class="hero-content-layout">
+        <h1>{{ section.settings.hero_content_title }}</h1>
+        <p>
+          {{ section.settings.hero_content_body }}
+        </p>
+
+        <div class="shop-btn">
+          <button>
+            <span>{{ section.settings.hero_content_btn }}</span>
+            <div class="arrow-icon">
+              {% render 'gift-btn-arrow' %}
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% comment %} FOOTER HEADING {% endcomment %}
+  <div class="hero-footer-heading">
+    <p>{{ section.settings.hero_footer_msg }}</p>
+  </div>
+
+</div>
+<script>
+    const humburger=document.querySelector(".mobile-open-icon");
+    const closeHumburger=document.querySelector(".mobile-open-close")
+    humburger.addEventListener("click",()=>{
+        humburger.closest('.hero-header-mobile-wrapper').classList.add("manu-open");
+        humburger.style.display='none';
+        closeHumburger.style.display='block'
+    });
+    closeHumburger.addEventListener("click",()=>{
+        closeHumburger.closest('.hero-header-mobile-wrapper').classList.remove("manu-open")
+        humburger.style.display='block';
+        closeHumburger.style.display='none'
+    })
+</script>
 {% schema %}
   {
     "name": "Hero Block",
-    "settings": []
+    "settings": [
+      {
+        "type": "text",
+        "default": "Tisso Visson",
+        "id": "header_logo_title",
+        "label": "Set Logo Title"
+      },
+      {
+        "type": "text",
+        "default": "Find the best gift for your loved ones",
+        "id": "header_heading",
+        "label": "Set Header Heading"
+      },
+      {
+        "type": "text",
+        "default": "Choose Gift",
+        "id": "header_btn_title",
+        "label": "Set Header Button Title"
+      },
+      {
+        "type": "text",
+        "default": "The Gift Guide",
+        "id": "hero_content_title",
+        "label": "Set Contnet Title"
+
+      }, {
+        "type": "text",
+        "default": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+        "id": "hero_content_body",
+        "label": "Set Contnet body"
+
+      }, {
+        "type": "text",
+        "default": "Shop Now",
+        "id": "hero_content_btn",
+        "label": "Set Contnet Button Text"
+
+      }, {
+        "type": "text",
+        "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL",
+        "id": "hero_footer_msg",
+        "label": "Set Hero Footer Message"
+
+      }
+    ]
   }
 
 
