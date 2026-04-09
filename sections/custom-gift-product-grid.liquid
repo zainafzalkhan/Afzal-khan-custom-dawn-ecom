@@ -288,6 +288,10 @@
                 Add To Card
               </button>
             </div>
+            <div class="success-with-atc">
+              <p>Item added to the cart</p>
+              <a href="{{ routes.cart_url }}" id="cart-icon-bubble">Go To Cart</a>
+            </div>
             <div class="errors">
               <span></span>
             </div>
@@ -316,6 +320,7 @@
                 )
                 const atcButton=modal.querySelector(".atc-button")
                 const selectedVariantInput=modal.querySelector("#selectedVariant");
+                const successMsg=modal.querySelector(".success-with-atc");
                 // close btn event binding
                 const modalCloseBtns=modal.querySelectorAll("[data-close]");
                 modalCloseBtns.forEach(modalClose=>{
@@ -393,6 +398,7 @@
                 const sendItemToCart=async()=>{
                     const variantId=selectedVariantInput.value;
                     if(!variantId) return null;
+
                     let items=[
                             {
                                 id:variantId,
@@ -429,6 +435,12 @@
                         console.log({options,items})
                         const resp= await fetch('{{shop.secure_url}}/cart/add',options);
                         const data=await resp.json();
+                        console.log({data});
+                        successMsg.style.display="flex";
+                        setTimeout(() => {
+                            successMsg.style.display="none"
+                        }, 5000);
+
                         
                 }
                 atcButton.addEventListener("click",sendItemToCart)
