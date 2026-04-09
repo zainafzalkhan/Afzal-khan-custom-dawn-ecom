@@ -1,59 +1,167 @@
-{% style  %} 
-    .main-product-grid-section{
-        padding:8px 16px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-    }
-    .product-grid{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:10px;
-    }
-    .hero-image{
-        position:relative;
-    }
-    .popup-button{
-        position:absolute;
-        top:40%;
-        left:50%;
-        cursor:pointer;
-    }
+{% style %}
+  @import url('https://fonts.googleapis.com/css2?family=Jost:ital, wght@0, 100..900;1, 100..900 &display=swap');
+  .main-product-grid-section {
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .hero-image {
+    position: relative;
+  }
+  .popup-button {
+    position: absolute;
+    cursor: pointer;
+  }
 
-    .custom-gift-card-modal{
-        position:fixed;
-        inset:0;
-        z-index:200;
-        justify-content:center;
-        align-items:center;
-    }
-    .custom-gift-card-modal .overlay{
-        display:block !important;
-        position: absolute;
-        inset:0;
-        background-color:rgba(25,25,25,0.6);
+  .custom-gift-card-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-gift-card-modal .overlay {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    background-color: rgba(25, 25, 25, 0.6);
 
-    }
-    .custom-gift-card-modal .card{
-        z-index: 500;
-        background: #fff;
-        padding: 32px 16px 16px 16px;
-        position:relative;
-    }
-    .custom-gift-card-modal .card [data-close]{
-        position:absolute;
-        top:0;
-        right:0;
-        cursor:pointer;
-    }
-    .custom-gift-card-modal .title{
-        margin:0 !important;
-    }
-    .custom-gift-card-modal .details{
-        display:flex;
-        flex-direction:row;
-        gap:12px;
-    }
+  }
+  .custom-gift-card-modal .card {
+
+    z-index: 500;
+    background: #fff;
+    padding: 32px 16px 16px;
+    position: relative;
+    max-width: 320px;
+  }
+  .custom-gift-card-modal .card [data-close] {
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  .custom-gift-card-modal .title {
+    margin: 0 !important;
+    font-size: 16px;
+    line-height: 120%;
+    font-family: jost;
+    font-weight: 300;
+  }
+  .custom-gift-card-modal .details {
+    font-family: jost;
+    font-weight: 300;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  /* options css */
+  .custom-gift-card-modal .select-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .custom-gift-card-modal .select-header span {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid;
+  }
+  .custom-gift-card-modal .up-down-icon {
+    border: 1px solid;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: none;
+  }
+  .select-option-wrapper.select-open .up-down-icon svg {
+    transform: rotate(180deg);
+  }
+  .select-option-wrapper ul {
+    position: absolute;
+    background: #fff;
+    z-index: 2;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    margin-block-start: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    border: 1px solid black;
+  }
+  .select-values-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .select-option-wrapper.select-open ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .select-option-wrapper ul li:hover {
+    background: #111;
+    color: #fff;
+  }
+
+  .is-select-option {
+    transform: rotate(180deg);
+  }
+
+  /* btns */
+  .btn-options-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+  .btn-options-wrapper button {
+    position: relative;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: 1px solid gray;
+    font-size: 16px;
+    text-align: left;
+    transition: background 0.8s
+    , color 0.5s;
+  }
+  .btn-options-wrapper button.isSelected {
+    background: #222;
+    color: #fff;
+  }
+  .btn-options-wrapper button::before {
+    content: "";
+    background: var(--btn-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+  }
+  .active-select {
+    background: #222;
+    color: #fff;
+  }
+  .atc-button {
+    width: 100%;
+    padding: 8px 16px;
+    background: black;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 24px;
+    cursor: pointer;
+  }
 {% endstyle %}
 
 <div class="main-product-grid-section">
@@ -62,90 +170,100 @@
   </div>
   <div class="product-grid">
     {% for block in section.blocks %}
-        {%  assign  product = all_products[block.settings.grid-product] %}
-        <div class="hero-image">
-            {{ product.featured_image |  image_url: width:"563"  | image_tag  }}
-            <div class="popup-button" data-productId="{{ product.id }}">
-               {% render 'custom-gift-plus-icon' %}
-            </div>
+      {% assign product = all_products[block.settings.grid-product] %}
+      <div class="hero-image">
+        {{ product.featured_image | image_url: width: "563" | image_tag }}
+        <div
+          class="popup-button"
+          data-productId="{{ product.id }}"
+          style="top:{{ block.settings.quickViewTop }}%;left:{{ block.settings.quickViewLeft }}%">
+          {% render 'custom-gift-plus-icon' %}
         </div>
-        <div class="custom-gift-card-modal modal-{{ product.id }}" style="display:none">
-            <script id="productData" type="application/json">
-                {{ product | json }}
-            </script>
-            <div class="overlay" data-close></div>
-                <div class="card">
-                    <div class="close" data-close>
-                        {% render 'custom-gift-close-icon' %}
-                    </div>
-                    <div class="details">
-                        <div class="image-container">
-                           {{ product.featured_image |  image_url: width:"200"  | image_tag  }}
-                        </div>
-                        <div class="product-info">
-                            <h3 class="title">
-                                {{ product.title |   truncate: 30}}
-                            </h3>
-                            <div class="price">
-                                $43
-                            </div>
-                            <div class="description">
-                                {{ product.description | truncate: 30 }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-content">
-                        <div class="product-options">
-                            <div class="custom-options">
-                                {% for option in product.options_with_values %}
-                                    {% assign optionName= option.name %}
-                                    <p>{{option.name}}</p>
-                                    {% if optionName=='color' or optionName=='Color' %}
-                                        {% for value in option.values %}
-                                            <div class="option-btn-wrapper">
-                                                <button
-                                                    class="btn-option"
-                                                    data-value="{{ value }}"
-                                                    data-optionname="{{optionName}}"
-                                                >
-                                                    {{ value }}
-                                                </button>
-                                            </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="select-option-wrapper">
-                                            <div class="select-header">
-                                                <span>Choose Your size</span>
-                                                <div class="up-down-icon">
-                                                    {% render 'custom-gift-up-down-icon' %}
-                                                </div>
-                                            </div>
-                                            <ul>
-                                                {% for value in option.values %}
-                                                    <li
-                                                    class="select-option"
-                                                    data-value="{{value}}"
-                                                    data-optionname="{{optionName}}"
-                                                    >{{ value }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="atc-wrapper">
-                            <input type="hidden" name="selectedVariant" id="selectedVariant">
-                            <button class="atc-button">
-                                Add To Card
-                            </button>
-                        </div>
-                        <div class="errors">
-                            <span></span>
-                        </div>
-                    </div>
-                </div>
+      </div>
+      <div class="custom-gift-card-modal modal-{{ product.id }}" style="display:none">
+        <script id="productData" type="application/json">
+          {{ product | json }}
+        </script>
+        <div class="overlay" data-close></div>
+        <div class="card">
+          <div class="close" data-close>
+            {% render 'custom-gift-close-icon' %}
+          </div>
+          <div class="details">
+            <div class="image-container">
+              {{ product.featured_image | image_url: width: "120" | image_tag }}
             </div>
+            <div class="product-info">
+              <h3 class="title">
+                {{ product.title | truncate: 30 }}
+              </h3>
+              <div class="price">
+                {{ product.price | money_with_currency }}
+              </div>
+              <div class="description">
+                {{ product.description | truncate: 80, '...' }}
+              </div>
+            </div>
+          </div>
+          <div class="form-content">
+            <div class="product-options">
+              <div class="custom-options">
+                {% for option in product.options_with_values %}
+                  {% assign optionName = option.name %}
+                  <p>{{ option.name }}</p>
+                  {% if optionName == 'color' or optionName == 'Color' %}
+                    <div class="btn-options-wrapper">
+                      {% for value in option.values %}
+                        <div class="option-btn-wrapper">
+                          <button
+                            class="btn-option"
+                            data-value="{{ value }}"
+                            data-optionname="{{optionName}}">
+                            {{ value }}
+                          </button>
+                        </div>
+                      {% endfor %}
+                    </div>
+
+                  {% else %}
+                    <div class="select-option-wrapper">
+                      <div class="select-header">
+                        <span>Choose Your size</span>
+                        <div class="up-down-icon">
+                          {% render 'custom-gift-up-down-icon' %}
+                        </div>
+                      </div>
+                      <div class="select-values-wrapper">
+                        <ul>
+                          {% for value in option.values %}
+                            <li
+                              class="select-option"
+                              data-value="{{value}}"
+                              data-optionname="{{optionName}}">{{ value }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="atc-wrapper">
+              <input
+                type="hidden"
+                name="selectedVariant"
+                id="selectedVariant">
+              <button class="atc-button">
+                Add To Card
+              </button>
+            </div>
+            <div class="errors">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endfor %}
   </div>
 </div>
@@ -154,7 +272,7 @@
 <script>
     (function (){
         const popupBtns=document.querySelectorAll(".popup-button");
-        
+        const softWinterBlackMVariant="51557380620605"
         popupBtns.forEach(popupBtn=>{
             popupBtn.addEventListener('click',(e)=>{
                 document.querySelectorAll(".custom-gift-card-modal").forEach(modal=>modal.style.display='none');
@@ -204,9 +322,12 @@
                 // btn event binding
                 const btns=modal.querySelectorAll('.btn-option');
                 btns.forEach(btn=>{
+                    const clrName=btn.dataset.value.toLowerCase();
+                    btn.style.setProperty('--btn-color',clrName)
                     btn.addEventListener("click",()=>{
-                        btns.forEach(btn=>btn.classList.remove("active-btn"))
-                        btn.classList.add('active-btn')
+                        btns.forEach(btn=>btn.classList.remove("isSelected"))
+                        //btn.style.setProperty('--btn-color','#222')
+                        btn.classList.add('isSelected')
                         const value=btn.dataset.value;
                         const optionName=btn.dataset.optionname;
                         if(value && optionName){
@@ -217,13 +338,19 @@
                 });
 
                 // select event binding
+                const selectHeader=modal.querySelector(".select-header");
+                selectHeader.addEventListener('click',()=>{
+                    selectHeader.closest('.select-option-wrapper').classList.toggle('select-open');
+                })
                 const selects=modal.querySelectorAll(".select-option")
                   selects.forEach(select=>{
                     select.addEventListener("click",()=>{
-                        selects.forEach(select=>select.classList.remove("active-select"))
+                        selects.forEach(select=>select.classList.remove("active-select"));
+                        selectHeader.closest('.select-option-wrapper').classList.remove('select-open');
                         select.classList.add('active-select')
                         const value=select.dataset.value;
                         const optionName=select.dataset.optionname;
+                        selectHeader.querySelector("span").textContent=value;
                         console.log({optionName,value})
                           if(value && optionName){
                             selectedOptions[optionName]=value
@@ -236,22 +363,43 @@
                 const sendItemToCart=async()=>{
                     const variantId=selectedVariantInput.value;
                     if(!variantId) return null;
+                    let items=[
+                            {
+                                id:variantId,
+                                quantity:1
+                            }
+                    ]
+                    const isAddon=Object.entries(selectedOptions).every(([key,value])=>{
+                        key=key.toLowerCase()
+                        value=value.toLowerCase();
+                        if(key=='size' && (value=='m' || value== 'medium')){
+                            return true
+                        }else if(key=='color' && value=='black'){
+                            return true
+                        }else{
+                            return false;
+                        }
+                    })
+                   
+                    if(isAddon){
+                        items.push({
+                            id:softWinterBlackMVariant,
+                            quantity:1
+                        })
+                    }
                     let options={
                             method:'POST',
                             headers:{
                             "Content-Type":"application/json"
                             },
                             body:JSON.stringify({
-                            'items':[
-                            {
-                                id:variantId,
-                                quantity:1
-                            }
-                            ]})
+                            'items':items
+                        })
                         }
+                        console.log({options,items})
                         const resp= await fetch('{{shop.secure_url}}/cart/add',options);
                         const data=await resp.json();
-                        console.log({data})
+                        
                 }
                 atcButton.addEventListener("click",sendItemToCart)
               
@@ -260,7 +408,6 @@
         })
           
     })()
-  
 </script>
 
 {% schema %}
@@ -273,18 +420,36 @@
         "id": "product-grid-heading",
         "label": "Product Grid Heading"
       }
-     
+
     ],
     "blocks": [
       {
         "name": "product-card",
         "type": "product",
         "settings": [
-             {
-                "type":"product",
-                "id": "grid-product",
-                "label": "Assign Grid Product",
-            }
+          {
+            "type": "product",
+            "id": "grid-product",
+            "label": "Assign Grid Product"
+          }, {
+            "type": "range",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "id": "quickViewTop",
+            "default": 70,
+            "label": "Set Quick View Button From Top"
+          }, {
+            "type": "range",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "id": "quickViewLeft",
+            "default": 70,
+            "label": "Set Quick View Button From Left"
+          }
         ],
         "limit": 6
       }
