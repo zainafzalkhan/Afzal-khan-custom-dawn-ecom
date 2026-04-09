@@ -433,7 +433,7 @@
                         })
                         }
                         console.log({options,items})
-                        const resp= await fetch('{{shop.secure_url}}/cart/add',options);
+                        const resp= await fetch('{{shop.secure_url}}/cart/add.js',options);
                         const data=await resp.json();
                         console.log({data});
                         successMsg.style.display="flex";
