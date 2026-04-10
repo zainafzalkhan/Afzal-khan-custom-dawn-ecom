@@ -141,10 +141,10 @@
                         }
                       
                         try{
-                            const resp= await fetch('{{shop.secure_url}}/cart/add.js',options);
+                            const resp= await fetch(`/cart/add.js`,options);
                             const data=await resp.json();
                             if(data?.items.length>0){
-                                const itemsTitles=`${data.items.map(item.title).join(" And ")}`;
+                                const itemsTitles=`${data.items.map(item=>item.title).join(" And ")}`;
                                 successMsg.style.display="flex";
                                 successMsg.querySelector("p").textContent="";
                                 successMsg.querySelector("p").textContent=`${itemsTitles} added to the cart`
