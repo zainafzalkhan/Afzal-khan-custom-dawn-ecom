@@ -1,5 +1,4 @@
 {% style %}
-  @import url('https://fonts.googleapis.com/css2?family=Jost:ital, wght@0, 100..900;1, 100..900 &display=swap');
   .main-product-grid-section {
     padding: 16px 32px;
     display: flex;
@@ -18,15 +17,20 @@
     position: relative;
     width: calc(33% - 10px);
   }
-  .heading {
+  .heading h2 {
+    font-family: "Jost"
+    , sans-serif;
     padding: 16px 50px;
+    font-size: 36px;
+
   }
   @media screen and (max-width: 768px) {
     .hero-image {
       width: calc(50% - 10px);
     }
-    .heading {
+    .heading h2 {
       text-align: center;
+      font-size: 18px;
     }
     .main-product-grid-section {
       padding: 0 8px;
@@ -78,25 +82,37 @@
     right: 0;
     cursor: pointer;
   }
-  .custom-gift-card-modal .title {
-    margin: 0 !important;
-    font-size: 16px;
-    line-height: 120%;
-    font-family: jost;
-    font-weight: 300;
-  }
+
   .custom-gift-card-modal .details {
-    font-family: jost;
-    font-weight: 300;
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
+
+
+    /*
+   font-family: jost;
+   font-weight: 300;
+   display: flex;
+   flex-direction: row;
+   gap: 12px;
+*/
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 8px;
   }
 
+  .custom-gift-card-modal .image-container {
+    width: 120px;
+    height: 140px;
+    overflow: hidden;
+  }
+  .custom-gift-card-modal .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   /* options css */
   .custom-gift-card-modal .select-header {
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
   }
   .custom-gift-card-modal .select-header span {
     display: inline-block;
@@ -113,6 +129,31 @@
     align-items: center;
     border-left: none;
   }
+  /* PRODUCT INFO */
+  .product-info {
+    font-family: "jost";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  .custom-gift-card-modal .title {
+    margin: 0 !important;
+    font-size: 16px;
+    line-height: 120%;
+    font-family: jost;
+    font-weight: 300;
+  }
+  .product-info .price {
+    font-weight: 400;
+  }
+
+  .product-info .description p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+  }
+  /* SELECT OPTIONS CSS */
   .select-option-wrapper.select-open .up-down-icon svg {
     transform: rotate(180deg);
   }
@@ -143,6 +184,7 @@
   .select-option-wrapper ul li:hover {
     background: #111;
     color: #fff;
+    cursor: pointer;
   }
 
   .is-select-option {
@@ -153,9 +195,11 @@
   .btn-options-wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    cursor: pointer;
 
   }
   .btn-options-wrapper button {
+    cursor: pointer;
     position: relative;
     width: 100%;
     padding: 12px;
@@ -183,14 +227,48 @@
     background: #222;
     color: #fff;
   }
+
+  /* ADD TO CART CSS */
   .atc-button {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     padding: 8px 16px;
     background: black;
     color: #fff;
-    font-size: 18px;
     margin-top: 24px;
     cursor: pointer;
+    font-family: 'Jost';
+    font-size: 16px;
+    border: none;
+  }
+  .atc-button:disabled {
+    background: gray;
+  }
+
+
+  /*
+   .atc-button .initial-msg {
+   display: none;
+   }
+   .atc-button:disabled .initial-msg {
+   display: inline-block;
+   text-align: center;
+   background: green;
+   font-size: 8px;
+   font-family: jost;
+   }
+*/
+  .success-with-atc {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: green;
   }
 {% endstyle %}
 
@@ -221,7 +299,7 @@
           </div>
           <div class="details">
             <div class="image-container">
-              {{ product.featured_image | image_url: width: "120" | image_tag }}
+              {{ product.featured_image | image_url: width: 120 | image_url: height: 140 | image_tag }}
             </div>
             <div class="product-info">
               <h3 class="title">
@@ -231,7 +309,7 @@
                 {{ product.price | money_with_currency }}
               </div>
               <div class="description">
-                {{ product.description | truncate: 80, '...' }}
+                {{ product.description | truncate: 75, '...' }}
               </div>
             </div>
           </div>
@@ -285,15 +363,19 @@
                 name="selectedVariant"
                 id="selectedVariant">
               <button class="atc-button">
-                Add To Card
+                <span>Add To Cart</span>
+                <div class="custom-arrow-icon">
+                  {% render 'custom-gift-white-arrow' %}
+                </div>
               </button>
+
             </div>
             <div class="success-with-atc">
-              <p>Item added to the cart</p>
+              <p></p>
               <a href="{{ routes.cart_url }}" id="cart-icon-bubble">Go To Cart</a>
             </div>
-            <div class="errors">
-              <span></span>
+            <div class="errors-atc" style="text-align: center; display:none; color:red">
+              Please Select Variant Options
             </div>
           </div>
         </div>
@@ -302,155 +384,8 @@
   </div>
 </div>
 
+<script src="{{ 'custom-gift-card-product-grid.js' | asset_url }}" defer="defer"></script>
 
-<script>
-    (function (){
-        const popupBtns=document.querySelectorAll(".popup-button");
-        const softWinterBlackMVariant="51557380620605"
-        popupBtns.forEach(popupBtn=>{
-            popupBtn.addEventListener('click',(e)=>{
-                document.querySelectorAll(".custom-gift-card-modal").forEach(modal=>modal.style.display='none');
-                
-                const currentBtn=e.currentTarget
-                const productId=currentBtn?.dataset?.productid
-                console.log({currentBtn,productId})
-                const modal=document.querySelector(`.modal-${productId}`);
-                const productData=JSON.parse(
-                    modal.querySelector("#productData")?.textContent
-                )
-                const atcButton=modal.querySelector(".atc-button")
-                const selectedVariantInput=modal.querySelector("#selectedVariant");
-                const successMsg=modal.querySelector(".success-with-atc");
-                // close btn event binding
-                const modalCloseBtns=modal.querySelectorAll("[data-close]");
-                modalCloseBtns.forEach(modalClose=>{
-                    modalClose.addEventListener("click",()=>{
-                        modal.style.display='none'
-                    })
-                })
-               
-                modal.style.display="flex"
-
-                // bind event on options
-                let selectedOptions={};
-                productData.options.forEach(optionName=>selectedOptions[optionName]=null)
-              
-                const findVariant=()=>{
-                    // go through every variant
-                    // for every variant we have options, and there's selectedOption for selected option values,
-                    console.log({selectedOptions})
-                    const matchedVariant=productData.variants.find(variant=>{
-                        const isEveryOptionMatched=productData.options.every((optionName,index)=>{
-                            const key=`option${index+1}`;
-                            if(variant[key]==selectedOptions[optionName]){
-                                return true;
-                            }
-                        })
-                        return isEveryOptionMatched;
-                    })
-                    if(matchedVariant){
-                        console.log(matchedVariant);
-                        // bind this variant id to hidden input 
-                        selectedVariantInput.value=matchedVariant.id;
-                    }
-                }
-                // btn event binding
-                const btns=modal.querySelectorAll('.btn-option');
-                btns.forEach(btn=>{
-                    const clrName=btn.dataset.value.toLowerCase();
-                    btn.style.setProperty('--btn-color',clrName)
-                    btn.addEventListener("click",()=>{
-                        btns.forEach(btn=>btn.classList.remove("isSelected"))
-                        //btn.style.setProperty('--btn-color','#222')
-                        btn.classList.add('isSelected')
-                        const value=btn.dataset.value;
-                        const optionName=btn.dataset.optionname;
-                        if(value && optionName){
-                            selectedOptions[optionName]=value
-                        }
-                        findVariant()
-                    })
-                });
-
-                // select event binding
-                const selectHeader=modal.querySelector(".select-header");
-                selectHeader.addEventListener('click',()=>{
-                    selectHeader.closest('.select-option-wrapper').classList.toggle('select-open');
-                })
-                const selects=modal.querySelectorAll(".select-option")
-                  selects.forEach(select=>{
-                    select.addEventListener("click",()=>{
-                        selects.forEach(select=>select.classList.remove("active-select"));
-                        selectHeader.closest('.select-option-wrapper').classList.remove('select-open');
-                        select.classList.add('active-select')
-                        const value=select.dataset.value;
-                        const optionName=select.dataset.optionname;
-                        selectHeader.querySelector("span").textContent=value;
-                        console.log({optionName,value})
-                          if(value && optionName){
-                            selectedOptions[optionName]=value
-                        }
-                        findVariant()
-                    })
-                });
-
-                // ATC button event binding
-                const sendItemToCart=async()=>{
-                    const variantId=selectedVariantInput.value;
-                    if(!variantId) return null;
-
-                    let items=[
-                            {
-                                id:variantId,
-                                quantity:1
-                            }
-                    ]
-                    const isAddon=Object.entries(selectedOptions).every(([key,value])=>{
-                        key=key.toLowerCase()
-                        value=value.toLowerCase();
-                        if(key=='size' && (value=='m' || value== 'medium')){
-                            return true
-                        }else if(key=='color' && value=='black'){
-                            return true
-                        }else{
-                            return false;
-                        }
-                    })
-                   
-                    if(isAddon){
-                        items.push({
-                            id:softWinterBlackMVariant,
-                            quantity:1
-                        })
-                    }
-                    let options={
-                            method:'POST',
-                            headers:{
-                            "Content-Type":"application/json"
-                            },
-                            body:JSON.stringify({
-                            'items':items
-                        })
-                        }
-                        console.log({options,items})
-                        const resp= await fetch('{{shop.secure_url}}/cart/add.js',options);
-                        const data=await resp.json();
-                        console.log({data});
-                        successMsg.style.display="flex";
-                        setTimeout(() => {
-                            successMsg.style.display="none"
-                        }, 5000);
-
-                        
-                }
-                atcButton.addEventListener("click",sendItemToCart)
-              
-                
-            })
-        })
-          
-    })()
-</script>
 
 {% schema %}
   {

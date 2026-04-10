@@ -1,13 +1,13 @@
 {% style %}
   .main-hero-container {
     padding: 16px 32px;
+    font-family: jost;
   }
   /* DESKTOP HEADER CSS */
   .hero-header-desktop {
     background: #f6f6f6;
   }
   .hero-header-list {
-
     display: flex;
     list-style: none;
     padding-inline-start: 0;
@@ -15,12 +15,19 @@
     justify-content: space-between;
     padding: 8px 50px;
   }
+  .hero-header-list p {
+    margin: 0;
+  }
   .hero-header-logo {
-    font-size: 18px;
+    color: #000;
+    font-size: 22px;
+    font-weight: 500;
     text-transform: uppercase;
   }
   .hero-header-heading {
-    font-size: 14px;
+    font-family: jost;
+    font-weight: 400;
+    font-size: 16px;
   }
   .hero-header-list li {
     display: flex;
@@ -29,19 +36,25 @@
     gap: 8px;
   }
   .hero-header-btn {
+    border: none;
     position: relative;
-    border: 1px solid;
-    padding: 4px 8px;
+    border: none;
+    padding: 8px 16px;
     cursor: pointer;
+    background: yellow;
   }
   .hero-header-btn::before {
     content: "";
-    background: yellow;
+    background: #111;
+    color: #fff;
     transform-origin: left;
     transform: scaleX(0);
     position: absolute;
     inset: 0;
     transition: transform 0.45s;
+  }
+  .hero-header-btn:hover {
+    color: #fff;
   }
   .hero-header-btn:hover::before {
     transform: scaleX(1);
@@ -61,23 +74,27 @@
   .hero-content-wrapper {
     background: #fff;
     z-index: 10;
-    padding: 50px;
-    max-width: 30%;
+    padding: 10px 10px 50px 50px;
+    max-width: 35%;
     width: fit-content;
 
   }
   .hero-content-layout {
+    font-family: jost;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 32px;
     align-items: start;
   }
   .hero-content-layout h1 {
-    font-size: 64px;
-    font-weight: 400;
+    margin: 0;
+    font-size: 70px;
+    font-family: jost;
+    font-weight: 500;
 
   }
   .hero-content-layout p {
+    font-size: 20px;
     line-height: 140%;
   }
   .hero-content-layout button {
@@ -233,7 +250,7 @@
           <li class="hero-header-btn">
             <span>{{ section.settings.header_btn_title }}</span>
             <div class="arrow-icon">
-              {% render 'gift-btn-arrow' %}
+              {% render 'custom-gift-white-arrow' %}
             </div>
           </li>
         </ul>
@@ -261,8 +278,8 @@
             </div>
             <div class="hero-header-btn">
               <span>{{ section.settings.header_btn_title }}</span>
-              <div class="arrow-icon">
-                {% render 'gift-btn-arrow' %}
+              <div class="arrow-icon" id="arrow">
+                {% render 'custom-gift-white-arrow' %}
               </div>
             </div>
           </div>
@@ -280,8 +297,11 @@
         <div class="shop-btn">
           <button>
             <span>{{ section.settings.hero_content_btn }}</span>
-            <div class="arrow-icon">
+            <div class="arrow-icon" style="display: none;">
               {% render 'gift-btn-arrow' %}
+            </div>
+            <div class="content-white-arraw">
+              {% render 'custom-gift-white-arrow' %}
             </div>
           </button>
         </div>
@@ -295,18 +315,28 @@
 
 </div>
 <script>
-    const humburger=document.querySelector(".mobile-open-icon");
-    const closeHumburger=document.querySelector(".mobile-open-close")
-    humburger.addEventListener("click",()=>{
-        humburger.closest('.hero-header-mobile-wrapper').classList.add("manu-open");
-        humburger.style.display='none';
-        closeHumburger.style.display='block'
+    function main(){
+        try{
+            const humburger=document.querySelector(".mobile-open-icon");
+            const closeHumburger=document.querySelector(".mobile-open-close")
+            humburger.addEventListener("click",()=>{
+                humburger.closest('.hero-header-mobile-wrapper').classList.add("manu-open");
+                humburger.style.display='none';
+                closeHumburger.style.display='block'
+            });
+            closeHumburger.addEventListener("click",()=>{
+                closeHumburger.closest('.hero-header-mobile-wrapper').classList.remove("manu-open")
+                humburger.style.display='block';
+                closeHumburger.style.display='none'
+            })
+        }catch(e){
+            console.log(`Error in toggle mobile menu: ${e.message}`)
+        }
+       
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        main()
     });
-    closeHumburger.addEventListener("click",()=>{
-        closeHumburger.closest('.hero-header-mobile-wrapper').classList.remove("manu-open")
-        humburger.style.display='block';
-        closeHumburger.style.display='none'
-    })
 </script>
 {% schema %}
   {
@@ -338,7 +368,7 @@
 
       }, {
         "type": "text",
-        "default": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+        "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
         "id": "hero_content_body",
         "label": "Set Contnet body"
 
