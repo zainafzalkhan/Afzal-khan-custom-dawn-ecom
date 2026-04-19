@@ -1,0 +1,84 @@
+{
+    "sections": {
+        "hero-section": {
+            "type": "custom-gift-card-hero",
+            "settings": {
+                "header_logo_title": "Tisso Visson",
+                "header_heading": "Find the best gift for your loved ones",
+                "header_btn_title": "Choose Gift",
+                "hero_content_title": "The Gift Guide",
+                "hero_content_body": "Discover Joy: Your Ultimate Holiday Gift Destination.",
+                "hero_content_btn": "Shop Now",
+                "hero_footer_msg": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+            }
+        },
+        "product-grid": {
+            "type": "custom-gift-product-grid",
+            "blocks": {
+                "product_gBWi3V": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "led-high-tops",
+                        "quickViewTop": 58,
+                        "quickViewLeft": 51
+                    }
+                },
+                "product_wGqaTw": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "floral-white-top",
+                        "quickViewTop": 70,
+                        "quickViewLeft": 70
+                    }
+                },
+                "product_w3t7JK": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "classic-varsity-top",
+                        "quickViewTop": 70,
+                        "quickViewLeft": 70
+                    }
+                },
+                "product_zgjUnA": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "dark-denim-top",
+                        "quickViewTop": 70,
+                        "quickViewLeft": 70
+                    }
+                },
+                "product_XmmgcD": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "blue-silk-tuxedo",
+                        "quickViewTop": 70,
+                        "quickViewLeft": 70
+                    }
+                },
+                "product_bdDAkh": {
+                    "type": "product",
+                    "settings": {
+                        "grid-product": "black-leather-bag",
+                        "quickViewTop": 70,
+                        "quickViewLeft": 70
+                    }
+                }
+            },
+            "block_order": [
+                "product_gBWi3V",
+                "product_wGqaTw",
+                "product_w3t7JK",
+                "product_zgjUnA",
+                "product_XmmgcD",
+                "product_bdDAkh"
+            ],
+            "settings": {
+                "product-grid-heading": "Tisso vison in the wild"
+            }
+        }
+    },
+    "order": [
+        "hero-section",
+        "product-grid"
+    ]
+}
